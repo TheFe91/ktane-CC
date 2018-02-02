@@ -164,7 +164,7 @@ public class caesarCipher : MonoBehaviour {
             }
             Debug.LogFormat("[Caesar Cipher #{0}] <Stage {1}> Serial number does not contain vowels. More than 3 batteries on the bomb. Encrypted word is {2}", _moduleId, num, encrypted);
         }
-        else if (Info.IsPortPresent(KMBombInfoExtensions.KnownPortType.Serial) && Info.GetBatteryCount() > 0 && Info.GetBatteryCount() <= 3)
+        else if (Info.IsPortPresent(KMBombInfoExtensions.KnownPortType.Serial))
         {
             foreach (char c in ans)
             {
@@ -194,7 +194,7 @@ public class caesarCipher : MonoBehaviour {
                 }
             }
         }
-        else if (Info.GetStrikes() == 2)
+        else if (Info.GetStrikes() > 0)
         {
             if (stageCur != 1)
             {

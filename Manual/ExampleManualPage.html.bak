@@ -51,7 +51,7 @@
 						<td><strong><em>Case 04: You committed strikes:</em></strong><br>
 						If this is your first word, refer to Case 02, otherwise go on.<br>
 						Add to the key the number corrisponding to each letter of the last word you decrypted,
-						then proceed as like as in Case 02.<br>
+						then proceed as like as in Case 02.
 						Every letter of the word must be shifted forwards by the rest of the division
 						between his Letter-Number Relation and the key.</td>
 					</tr>
