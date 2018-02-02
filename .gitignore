@@ -30,3 +30,6 @@ sysinfo.txt
 Assets/Generated
 Gen
 
+steam_appid.txt
+steam_api64.dll
+
