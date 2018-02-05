@@ -3,7 +3,7 @@ using KMHelper;
 using System.Linq;
 using System.Collections.Generic;
 
-public class caesarCipher : MonoBehaviour {
+public class modernCipher : MonoBehaviour {
 
     public KMAudio Audio;
     public KMBombModule Module;
@@ -28,7 +28,7 @@ public class caesarCipher : MonoBehaviour {
     private Dictionary<string, string> chosenWords;
     private bool _isSolved = false, _lightsOn = false;
     private string ans, encrypted;
-    private int stageAmt = 5, stageCur = 1;
+    private int stageAmt = 3, stageCur = 1;
 
     // Use this for initialization
     void Start () {
@@ -110,14 +110,13 @@ public class caesarCipher : MonoBehaviour {
         wordsCounter[3].GetComponent<Renderer>().material = ledsMat;
         wordsCounter[4].GetComponent<Renderer>().material = ledsMat;
         wordsCounter[0].GetComponent<Renderer>().material = ledsMat;
-        generateStage(1);
         stageCur = 1;
+        generateStage(1);
     }
 
     private void generateStage(int num)
     {
         Debug.LogFormat("[Caesar Cipher #{0}] <Stage {1}> START", _moduleId, num);
-        Debug.LogFormat("[Caesar Cipher #{0}] <Stage {1}> ChosenWords Lenght is {2}", _moduleId, num, chosenWords.Keys.Count);
 
         do
             ans = words[Random.Range(0, 50)];
@@ -207,7 +206,7 @@ public class caesarCipher : MonoBehaviour {
                 else
                 {
                     encrypted = ans;
-                    Debug.LogFormat("[Caesar Cipher #{0}] <Stage {1}> Lucky case! No match! Word is not encrypted, so encrypted is {2}", _moduleId, num, ans);
+                    Debug.LogFormat("[Caesar Cipher #{0}] <Stage {1}> Lucky case! Word is not encrypted, so encrypted is {2}", _moduleId, num, ans);
                 }
             }
         }

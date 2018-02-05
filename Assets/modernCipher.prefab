@@ -1457,7 +1457,7 @@ GameObject:
   - component: {fileID: 114164299507862828}
   - component: {fileID: 114887644177326788}
   m_Layer: 0
-  m_Name: caesarCipher
+  m_Name: modernCipher
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8625,6 +8625,64 @@ MonoBehaviour:
   Screen: {fileID: 102004144040095612}
   UserScreen: {fileID: 102620186399848526}
   ledsMat: {fileID: 2100000, guid: 09c80e779f3921e438dba4fcc0bfd6d7, type: 2}
+  _moduleId: 0
+  words:
+  - SALLY
+  - BUTTON
+  - PHONE
+  - YEAH
+  - MOTHER
+  - DADDY
+  - COMPUTER
+  - CLOCK
+  - SCREEN
+  - RULER
+  - HOUSE
+  - WEDDING
+  - ROOM
+  - SALES
+  - PIZZA
+  - LOVE
+  - CHICKEN
+  - HORSE
+  - DANCER
+  - BOMB
+  - WINDOW
+  - CONTROL
+  - CONDOM
+  - MODULE
+  - PAPER
+  - PENCIL
+  - SCHOOL
+  - SOCCER
+  - BASKET
+  - MOVIES
+  - ITALY
+  - ENGLAND
+  - BANANA
+  - BRAZIL
+  - PARK
+  - ZOMBIE
+  - HORROR
+  - COMICS
+  - BOOKS
+  - DEGREE
+  - FRANCE
+  - SPAIN
+  - MOBILE
+  - SHIP
+  - SCREEN
+  - EMAIL
+  - PLANE
+  - CABLES
+  - MANUAL
+  - PRINTER
+  _isSolved: 0
+  _lightsOn: 0
+  ans: 
+  encrypted: 
+  stageAmt: 5
+  stageCur: 1
 --- !u!114 &114891052166490444
 MonoBehaviour:
   m_ObjectHideFlags: 1
