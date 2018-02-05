@@ -11,9 +11,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 615501dbe4f3fe94fbf4b564abb10237, type: 3}
   m_Name: ModConfig
   m_EditorClassIdentifier: 
-  id: caesarCipher
-  title: Caesar Cipher
-  description: 
+  id: modernCipher
+  title: Modern Cipher
+  description: 'A modern version of a cipher.
+
+    Follow the instruction to reveal the encrypted word.
+
+    Have fun!
+
+
+    moduleID: modernCipher'
   version: 1.0
   outputFolder: build
-  previewImage: {fileID: 0}
+  previewImage: {fileID: 2800000, guid: fa93715097659284b863b9ef8bfcb989, type: 3}

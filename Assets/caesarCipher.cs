@@ -12,11 +12,19 @@ public class caesarCipher : MonoBehaviour {
     public KMSelectable submit, erase;
     public MeshFilter[] wordsCounter;
     public TextMesh Screen, UserScreen;
+    public Material ledsMat;
 
     private static int _moduleIdCounter = 1;
     private int _moduleId = 0;
 
-    private string[] words = { "SALLY", "BUTTON", "PHONE", "QWERT", "MOTHER" };
+    private string[] words =
+    {
+        "SALLY", "BUTTON", "PHONE", "YEAH", "MOTHER", "DADDY", "COMPUTER", "CLOCK", "SCREEN", "RULER",
+        "HOUSE", "WEDDING", "ROOM", "SALES", "PIZZA", "LOVE", "CHICKEN", "HORSE", "DANCER", "BOMB",
+        "WINDOW", "CONTROL", "CONDOM", "MODULE", "PAPER", "PENCIL", "SCHOOL", "SOCCER", "BASKET", "MOVIES",
+        "ITALY", "ENGLAND", "BANANA", "BRAZIL", "PARK", "ZOMBIE", "HORROR", "COMICS", "BOOKS", "DEGREE",
+        "FRANCE", "SPAIN", "MOBILE", "SHIP", "SCREEN", "EMAIL", "PLANE", "CABLES", "MANUAL", "PRINTER"
+    };
     private Dictionary<string, string> chosenWords;
     private bool _isSolved = false, _lightsOn = false;
     private string ans, encrypted;
@@ -38,9 +46,11 @@ public class caesarCipher : MonoBehaviour {
         erase.OnInteract += delegate ()
         {
             UserScreen.text = "";
+            Audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, erase.transform);
+            erase.AddInteractionPunch();
             return false;
         };
-        for (int i = 0; i < 27; i++)
+        for (int i = 0; i < 26; i++)
         {
             int j = i;
             btn[i].OnInteract += delegate ()
@@ -81,7 +91,6 @@ public class caesarCipher : MonoBehaviour {
             case 23: return "B";
             case 24: return "N";
             case 25: return "M";
-            case 26: return " ";
         }
         return "";
     }
@@ -96,6 +105,11 @@ public class caesarCipher : MonoBehaviour {
     {
         UserScreen.text = "";
         chosenWords = new Dictionary<string, string>();
+        wordsCounter[1].GetComponent<Renderer>().material = ledsMat;
+        wordsCounter[2].GetComponent<Renderer>().material = ledsMat;
+        wordsCounter[3].GetComponent<Renderer>().material = ledsMat;
+        wordsCounter[4].GetComponent<Renderer>().material = ledsMat;
+        wordsCounter[0].GetComponent<Renderer>().material = ledsMat;
         generateStage(1);
         stageCur = 1;
     }
@@ -103,9 +117,10 @@ public class caesarCipher : MonoBehaviour {
     private void generateStage(int num)
     {
         Debug.LogFormat("[Caesar Cipher #{0}] <Stage {1}> START", _moduleId, num);
+        Debug.LogFormat("[Caesar Cipher #{0}] <Stage {1}> ChosenWords Lenght is {2}", _moduleId, num, chosenWords.Keys.Count);
 
         do
-            ans = words[Random.Range(0, 5)];
+            ans = words[Random.Range(0, 50)];
         while (chosenWords.Values.Contains(ans));
         chosenWords.Add("Stage"+stageCur, ans);
         encrypted = "";
@@ -120,6 +135,8 @@ public class caesarCipher : MonoBehaviour {
             key += number;
         }
 
+        key += Info.GetStrikes();
+
         Debug.LogFormat("[Caesar Cipher #{0}] <Stage {1}> Numbers in serial: {2} = {3} <= this is the key", _moduleId, num, numbers, key);
 
         if (Info.GetSerialNumberLetters().Any("AEIOU".Contains))
@@ -128,10 +145,10 @@ public class caesarCipher : MonoBehaviour {
             {
                 int position = getPositionFromChar(c);
                 position += key;
-                if (position > 26)
+                if (position > 25)
                 {
                     int tmp = -1;
-                    while (position > 26)
+                    while (position > 25)
                     {
                         position--;
                         tmp++;
@@ -151,7 +168,7 @@ public class caesarCipher : MonoBehaviour {
                 position -= key;
                 if (position < 0)
                 {
-                    int tmp = 27;
+                    int tmp = 26;
                     while (position < 0)
                     {
                         position++;
@@ -173,10 +190,10 @@ public class caesarCipher : MonoBehaviour {
                 if (stageCur != 1)
                 {
                     position += key + chosenWords["Stage" + (stageCur - 1).ToString()].Count(); //sommo alla chiave il numero di lettere della parola precedente
-                    if (position > 26)
+                    if (position > 25)
                     {
                         int tmp = -1;
-                        while (position > 26)
+                        while (position > 25)
                         {
                             position--;
                             tmp++;
@@ -194,41 +211,26 @@ public class caesarCipher : MonoBehaviour {
                 }
             }
         }
-        else if (Info.GetStrikes() > 0)
+        else
         {
-            if (stageCur != 1)
-            {
-                string prevWord = chosenWords["Stage" + (stageCur - 1).ToString()];
-                foreach (char x in prevWord)
-                {
-                    key += getPositionFromChar(x); //sommo alla chiave le posizioni delle lettere della parola precedente
-                }
-                Debug.LogFormat("[Caesar Cipher #{0}] <Stage {1}> after operations key {2}", _moduleId, num, key);
-            }
             foreach (char c in ans)
             {
                 int position = getPositionFromChar(c);
-                position -= key;
+                position -= key - Info.GetSolvedModuleNames().Count;
                 if (position < 0)
                 {
-                    int tmp = 27;
+                    int tmp = 26;
                     while (position < 0)
                     {
                         position++;
                         tmp--;
-                        if (tmp < 0) tmp = 27;
                     }
                     encrypted += intToChar(tmp);
                 }
                 else
                     encrypted += intToChar(position);
             }
-            Debug.LogFormat("[Caesar Cipher #{0}] <Stage {1}> Serial number does not contain vowels. 2 or less batteries on the bomb. No Serial Port detected. 2 Strikes. Encrypted word is {2}", _moduleId, num, encrypted);
-        }
-        else
-        {
-            encrypted = ans;
-            Debug.LogFormat("[Caesar Cipher #{0}] <Stage {1}> Lucky case! No match! word is not encrypted, so encrypted is {2}", _moduleId, num, ans);
+            Debug.LogFormat("[Caesar Cipher #{0}] <Stage {1}> Serial number does not contain vowels. 2 or less batteries on the bomb. No Serial Port detected. Encrypted word is {2}", _moduleId, num, encrypted);
         }
             
         Screen.text = encrypted;
@@ -264,7 +266,6 @@ public class caesarCipher : MonoBehaviour {
             case 'X': return 20;
             case 'Y': return 5;
             case 'Z': return 19;
-            case ' ': return 26;
         }
         return -1;
     }
@@ -272,11 +273,9 @@ public class caesarCipher : MonoBehaviour {
     void handlePress(int i)
     {
         Audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, btn[i].transform);
-        Debug.LogFormat("[Caesar Cipher #{0}] Pressed {1}", _moduleId, intToChar(i));
 
         if (!_lightsOn || _isSolved) return;
 
-        Debug.LogFormat("<handlePress> intToChar(i) returned {0}", intToChar(i));
         UserScreen.text += intToChar(i);
     }
 
@@ -291,6 +290,7 @@ public class caesarCipher : MonoBehaviour {
         if (UserScreen.text == ans)
         {
             Debug.LogFormat("[Caesar Cipher #{0}] <Stage{1}> Cleared!", _moduleId, stageCur);
+            wordsCounter[stageCur-1].GetComponent<Renderer>().material.color = Color.green;
             stageCur++;
             ans = "";
             if (stageCur > stageAmt)
@@ -310,6 +310,7 @@ public class caesarCipher : MonoBehaviour {
         {
             Debug.LogFormat("[Caesar Cipher #{0}] Answer incorrect! Strike and reset!", _moduleId);
             ans = "";
+            chosenWords = null;
             Module.HandleStrike();
             Init();
         }
