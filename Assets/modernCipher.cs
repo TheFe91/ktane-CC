@@ -105,11 +105,9 @@ public class modernCipher : MonoBehaviour {
     {
         UserScreen.text = "";
         chosenWords = new Dictionary<string, string>();
+        wordsCounter[0].GetComponent<Renderer>().material = ledsMat;
         wordsCounter[1].GetComponent<Renderer>().material = ledsMat;
         wordsCounter[2].GetComponent<Renderer>().material = ledsMat;
-        wordsCounter[3].GetComponent<Renderer>().material = ledsMat;
-        wordsCounter[4].GetComponent<Renderer>().material = ledsMat;
-        wordsCounter[0].GetComponent<Renderer>().material = ledsMat;
         stageCur = 1;
         generateStage(1);
     }
