@@ -114,14 +114,14 @@ public class modernCipher : MonoBehaviour {
 
     private void generateStage(int num)
     {
-        Debug.LogFormat("[Caesar Cipher #{0}] <Stage {1}> START", _moduleId, num);
+        Debug.LogFormat("[Modern Cipher #{0}] <Stage {1}> START", _moduleId, num);
 
         do
             ans = words[Random.Range(0, 50)];
         while (chosenWords.Values.Contains(ans));
         chosenWords.Add("Stage"+stageCur, ans);
         encrypted = "";
-        Debug.LogFormat("[Caesar Cipher #{0}] <Stage {1}> Picked word from array is {2}", _moduleId, num, ans);
+        Debug.LogFormat("[Modern Cipher #{0}] <Stage {1}> Picked word from array is {2}", _moduleId, num, ans);
 
         int key = 0;
         string numbers = "";
@@ -134,7 +134,7 @@ public class modernCipher : MonoBehaviour {
 
         key += Info.GetStrikes();
 
-        Debug.LogFormat("[Caesar Cipher #{0}] <Stage {1}> Numbers in serial: {2} = {3} <= this is the key", _moduleId, num, numbers, key);
+        Debug.LogFormat("[Modern Cipher #{0}] <Stage {1}> Numbers in serial: {2} = {3} <= this is the key", _moduleId, num, numbers, key);
 
         if (Info.GetSerialNumberLetters().Any("AEIOU".Contains))
         {
@@ -155,7 +155,7 @@ public class modernCipher : MonoBehaviour {
                 else
                     encrypted += intToChar(position);
             }
-            Debug.LogFormat("[Caesar Cipher #{0}] <Stage {1}> Serial number contains at least a vowel. Encrypted word is {2}", _moduleId, num, encrypted);
+            Debug.LogFormat("[Modern Cipher #{0}] <Stage {1}> Serial number contains at least a vowel. Encrypted word is {2}", _moduleId, num, encrypted);
         }
         else if (Info.GetBatteryCount() > 3)
         {
@@ -176,14 +176,14 @@ public class modernCipher : MonoBehaviour {
                 else
                     encrypted += intToChar(position);
             }
-            Debug.LogFormat("[Caesar Cipher #{0}] <Stage {1}> Serial number does not contain vowels. More than 3 batteries on the bomb. Encrypted word is {2}", _moduleId, num, encrypted);
+            Debug.LogFormat("[Modern Cipher #{0}] <Stage {1}> Serial number does not contain vowels. More than 3 batteries on the bomb. Encrypted word is {2}", _moduleId, num, encrypted);
         }
         else if (Info.IsPortPresent(KMBombInfoExtensions.KnownPortType.Serial))
         {
             foreach (char c in ans)
             {
                 int position = getPositionFromChar(c);
-                Debug.LogFormat("[Caesar Cipher #{0}] <Stage {1}> position is {2}", _moduleId, num, position);
+                Debug.LogFormat("[Modern Cipher #{0}] <Stage {1}> position is {2}", _moduleId, num, position);
                 if (stageCur != 1)
                 {
                     position += key + chosenWords["Stage" + (stageCur - 1).ToString()].Count(); //sommo alla chiave il numero di lettere della parola precedente
@@ -199,12 +199,12 @@ public class modernCipher : MonoBehaviour {
                     }
                     else
                         encrypted += intToChar(position);
-                    Debug.LogFormat("[Caesar Cipher #{0}] <Stage {1}> Serial number does not contain vowels. 3 or less batteries on the bomb and Serial Port detected. Encrypted word is {2}", _moduleId, num, encrypted);
+                    Debug.LogFormat("[Modern Cipher #{0}] <Stage {1}> Serial number does not contain vowels. 3 or less batteries on the bomb and Serial Port detected. Encrypted word is {2}", _moduleId, num, encrypted);
                 }
                 else
                 {
                     encrypted = ans;
-                    Debug.LogFormat("[Caesar Cipher #{0}] <Stage {1}> Lucky case! Word is not encrypted, so encrypted is {2}", _moduleId, num, ans);
+                    Debug.LogFormat("[Modern Cipher #{0}] <Stage {1}> Lucky case! Word is not encrypted, so encrypted is {2}", _moduleId, num, ans);
                 }
             }
         }
@@ -227,7 +227,7 @@ public class modernCipher : MonoBehaviour {
                 else
                     encrypted += intToChar(position);
             }
-            Debug.LogFormat("[Caesar Cipher #{0}] <Stage {1}> Serial number does not contain vowels. 2 or less batteries on the bomb. No Serial Port detected. Encrypted word is {2}", _moduleId, num, encrypted);
+            Debug.LogFormat("[Modern Cipher #{0}] <Stage {1}> Serial number does not contain vowels. 2 or less batteries on the bomb. No Serial Port detected. Encrypted word is {2}", _moduleId, num, encrypted);
         }
             
         Screen.text = encrypted;
@@ -278,21 +278,21 @@ public class modernCipher : MonoBehaviour {
 
     void ansChk()
     {
-        Debug.LogFormat("[Caesar Cipher #{0}] Pressed OK", _moduleId);
+        Debug.LogFormat("[Modern Cipher #{0}] Pressed OK", _moduleId);
         Audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, submit.transform);
         submit.AddInteractionPunch();
 
-        Debug.LogFormat("[Caesar Cipher #{0}] Given answer is {1}, expected is {2}", _moduleId, UserScreen.text, ans);
+        Debug.LogFormat("[Modern Cipher #{0}] Given answer is {1}, expected is {2}", _moduleId, UserScreen.text, ans);
 
         if (UserScreen.text == ans)
         {
-            Debug.LogFormat("[Caesar Cipher #{0}] <Stage{1}> Cleared!", _moduleId, stageCur);
+            Debug.LogFormat("[Modern Cipher #{0}] <Stage{1}> Cleared!", _moduleId, stageCur);
             wordsCounter[stageCur-1].GetComponent<Renderer>().material.color = Color.green;
             stageCur++;
             ans = "";
             if (stageCur > stageAmt)
             {
-                Debug.LogFormat("[Caesar Cipher #{0}] Module Solved!", _moduleId);
+                Debug.LogFormat("[Modern Cipher #{0}] Module Solved!", _moduleId);
                 Screen.text = "";
                 Module.HandlePass();
                 _isSolved = true;
@@ -305,7 +305,7 @@ public class modernCipher : MonoBehaviour {
         }
         else
         {
-            Debug.LogFormat("[Caesar Cipher #{0}] Answer incorrect! Strike and reset!", _moduleId);
+            Debug.LogFormat("[Modern Cipher #{0}] Answer incorrect! Strike and reset!", _moduleId);
             ans = "";
             chosenWords = null;
             Module.HandleStrike();
