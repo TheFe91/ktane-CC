@@ -1,10 +1,11 @@
-﻿using UnityEngine;
+using System.Collections;
+using UnityEngine;
 using KMHelper;
 using System.Linq;
 using System.Collections.Generic;
-using System.Collections;
-using System;
+using Random = UnityEngine.Random;
 using System.IO;
+using System;
 
 public class modernCipher : MonoBehaviour {
 
@@ -114,7 +115,7 @@ public class modernCipher : MonoBehaviour {
         Debug.LogFormat("[Modern Cipher #{0}] <Stage {1}> START", _moduleId, num);
 
         do
-            ans = wordsDataBase[UnityEngine.Random.Range(0, wordsDataBase.Length)];
+            ans = wordsDataBase[Random.Range(0, wordsDataBase.Length)];
         while (chosenWords.Values.Contains(ans));
         chosenWords.Add("Stage"+stageCur, ans);
         encrypted = "";
@@ -319,6 +320,25 @@ public class modernCipher : MonoBehaviour {
             Module.HandleStrike();
             Init();
         }
+    }
+
+    private string TwitchHelpMessage = "Submit the decrypted word with !{0} submit printer.";
+    IEnumerator ProcessTwitchCommand(string command)
+    {
+        string[] split = command.ToUpperInvariant().Split(new[] {" "}, StringSplitOptions.RemoveEmptyEntries);
+        if (split.Length != 2 || !split[0].Equals("SUBMIT")) yield break;
+        int[] buttons = split[1].Select(getPositionFromChar).ToArray();
+        if (buttons.Any(x => x < 0)) yield break;
+        yield return null;
+        erase.OnInteract();
+        yield return new WaitForSeconds(0.1f);
+        foreach (int button in buttons)
+        {
+            btn[button].OnInteract();
+            yield return new WaitForSeconds(0.1f);
+        }
+        submit.OnInteract();
+        yield return new WaitForSeconds(0.1f);
     }
 
     // Update is called once per frame
