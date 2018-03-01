@@ -2,8 +2,9 @@
 using KMHelper;
 using System.Linq;
 using System.Collections.Generic;
-using System.IO;
+using System.Collections;
 using System;
+using System.IO;
 
 public class modernCipher : MonoBehaviour {
 
@@ -18,11 +19,12 @@ public class modernCipher : MonoBehaviour {
 
     private static int _moduleIdCounter = 1;
     private int _moduleId = 0, totalWords = 0;
-    private StreamReader streamReader;
     private Dictionary<string, string> chosenWords;
     private bool _isSolved = false, _lightsOn = false;
     private string ans, encrypted;
     private int stageAmt = 3, stageCur = 1;
+
+    private string[] wordsDataBase = { "ABSENT", "ABSTRACT", "ABYSMAL", "ACCIDENT", "ACTIVATE", "ADJACENT", "AFRAID", "AGENDA", "AGONY", "ALCHEMY", "ALCOHOL", "ALIVE", "ALLERGIC", "ALLERGY", "ALPHA", "ALPHABET", "ALREADY", "AMETHYST", "AMNESTY", "AMPERAGE", "ANCIENT", "ANIMALS", "ANIMATE", "ANTHRAX", "ANXIOUS", "AQUARIUM", "AQUARIUS", "ARCADE", "ARRANGE", "ARROW", "ARTEFACT", "ASTERISK", "ATROPHY", "AUDIO", "AUTHOR", "AVOID", "AWESOME", "BALANCE", "BANANA", "BANDIT", "BANKRUPT", "BASKET", "BATTLE", "BAZAAR", "BEAUTY", "BEAVER", "BECOMING", "BEETLE", "BESEECH", "BETWEEN", "BICYCLE", "BIGGER", "BIGGEST", "BIOLOGY", "BIRTHDAY", "BISTRO", "BITES", "BLIGHT", "BLOCKADE", "BLUBBER", "BOMB", "BOMB", "BONOBO", "BOOKS", "BOTTLE", "BRAZIL", "BRIEF", "BROCCOLI", "BROKEN", "BROTHER", "BUBBLE", "BUDGET", "BULKHEAD", "BUMPER", "BUNNY", "BUTTON", "BYTES", "CABLES", "CALIBER", "CAMPAIGN", "CANADA", "CANISTER", "CAPTION", "CAUTION", "CAVITY", "CHALK", "CHAMBER", "CHAMFER", "CHAMPION", "CHANGES", "CHICKEN", "CHILDREN", "CHLORINE", "CHORD", "CHRONIC", "CHURCH", "CINNAMON", "CIVIC", "CLERIC", "CLOCK", "CLOCK", "COCOON", "COMBAT", "COMBINE", "COMEDY", "COMICS", "COMMA", "COMMAND", "COMMENT", "COMPOST", "COMPUTER", "CONDOM", "CONFLICT", "CONSIDER", "CONTOUR", "CONTROL", "CONTROL", "CORRUPT", "COSTUME", "CRIMINAL", "CRUNCH", "CRYPTIC", "CUBOID", "CYPHER", "DADDY", "DANCER", "DANCING", "DAUGHTER", "DEAD", "DECAPOD", "DECAY", "DECOY", "DEFEAT", "DEFUSER", "DEGREE", "DELAY", "DEMIGOD", "DENTIST", "DESERT", "DESIGN", "DESIRE", "DESSERT", "DETAIL", "DEVELOP", "DEVICE", "DIAMOND", "DICTATE", "DIFFUSE", "DILEMMA", "DINGY", "DINOSAUR", "DISEASE", "DISGUST", "DOCUMENT", "DOUBLED", "DOUBT", "DOWNBEAT", "DRAGON", "DRAWER", "DREAM", "DRINK", "DRUNKEN", "DUNGEON", "DYNASTY", "DYSLEXIA", "ECLIPSE", "ELDRITCH", "EMAIL", "EMULATOR", "ENCRYPT", "ENGLAND", "ENLIST", "ENOUGH", "ENSURE", "EQUALITY", "EQUATION", "ERUPTION", "ETERNITY", "EUPHORIA", "EXACT", "EXCLAIM", "EXHAUST", "EXPERT", "EXPERTLY", "EXPLAIN", "EXPLODES", "FABRIC", "FACTORY", "FADED", "FAINT", "FAIR", "FALSE", "FALTER", "FAMOUS", "FANTASY", "FARM", "FATHER", "FAUCET", "FAULTY", "FEARSOME", "FEAST", "FEBRUARY", "FEINT", "FESTIVAL", "FICTION", "FIGHTER", "FIGURE", "FINISH", "FIREMAN", "FIREWORK", "FIRST", "FIXTURE", "FLAGRANT", "FLAGSHIP", "FLAMINGO", "FLESH", "FLIPPER", "FLUORINE", "FLUSH", "FOREIGN", "FORENSIC", "FRACTAL", "FRAGRANT", "FRANCE", "FRANTIC", "FREAK", "FRICTION", "FRIDAY", "FRIENDLY", "FRIGHTEN", "FUROR", "FUSED", "GARAGE", "GENES", "GENETIC", "GENIUS", "GENTLE", "GLACIER", "GLITCH", "GOAT", "GOLDEN", "GRANULAR", "GRAPHICS", "GRAPHITE", "GRATEFUL", "GRIDLOCK", "GROUND", "GUITAR", "GUMPTION", "HALOGEN", "HARMONY", "HAWK", "HEADACHE", "HEARD", "HEDGEHOG", "HEINOUS", "HERD", "HERETIC", "HEXAGON", "HICCUP", "HIGHWAY", "HOLIDAY", "HOME", "HOMESICK", "HONEST", "HORROR", "HORSE", "HOUSE", "HUGE", "HUMANITY", "HUNGRY", "HYDROGEN", "HYSTERIA", "IMAGINE", "INDUSTRY", "INFAMOUS", "INSIDE", "INTEGRAL", "INTEREST", "IRONCLAD", "ISSUE", "ITALIC", "ITALY", "ITCH", "JAUNDICE", "JEANS", "JEOPARDY", "JOYFUL", "JOYSTICK", "JUICE", "JUNCTURE", "JUNGLE", "JUNKYARD", "JUSTICE", "KEEP", "KEYBOARD", "KILOBYTE", "KILOGRAM", "KINGDOM", "KITCHEN", "KITTEN", "KNIFE", "KRYPTON", "LADYLIKE", "LANGUAGE", "LARGE", "LAUGHTER", "LAUNCH", "LEADERS", "LEARN", "LEAVE", "LEOPARD", "LEVEL", "LIBERAL", "LIBERTY", "LIFEBOAT", "LIGAMENT", "LIGHT", "LIQUID", "LISTEN", "LITTLE", "LOBSTER", "LOGICAL", "LOVE", "LUCKY", "LULLED", "LUNATIC", "LURKS", "MACHINE", "MADAM", "MAGNETIC", "MANAGER", "MANUAL", "MARINA", "MARINE", "MARTIAN", "MASTER", "MATRIX", "MEASURE", "MEATY", "MEDDLE", "MEDICAL", "MENTAL", "MENU", "MEOW", "MERCHANT", "MESSAGE", "MESSES", "METAL", "METHOD", "METTLE", "MILITANT", "MINIM", "MINIMUM", "MIRACLE", "MIRROR", "MISJUDGE", "MISPLACE", "MISSES", "MISTAKE", "MIXTURE", "MNEMONIC", "MOBILE", "MODERN", "MODEST", "MODULE", "MODULE", "MOIST", "MONEY", "MORNING", "MOST", "MOTHER", "MOVIES", "MULTIPLE", "MUNCH", "MUSICAL", "MYSTERY", "MYSTIC", "MYSTIQUE", "MYTHIC", "NARCOTIC", "NASTY", "NATURE", "NAVIGATE", "NETWORK", "NEUTRAL", "NOBELIUM", "NOBODY", "NOISE", "NOTICE", "NOUN", "NUCLEAR", "NUMERAL", "NUTRIENT", "NYMPH", "OBELISK", "OBSTACLE", "OBVIOUS", "OCTOPUS", "OFFSET", "OMEGA", "OPAQUE", "OPINION", "ORANGE", "ORGANIC", "OUCH", "OUTBREAK", "OUTDO", "OVERCAST", "OVERLAPS", "PACKAGE", "PADLOCK", "PANCAKE", "PANDA", "PANIC", "PAPER", "PAPERS", "PARENT", "PARK", "PARTICLE", "PASSIVE", "PATENTED", "PATHETIC", "PATIENT", "PEACE", "PEASANT", "PENALTY", "PENCIL", "PENGUIN", "PERFECT", "PERSON", "PERSUADE", "PERUSING", "PHONE", "PHONE", "PHYSICAL", "PIANO", "PICTURE", "PIGLET", "PILFER", "PILLAGE", "PINCH", "PIRATE", "PITCHER", "PIZZA", "PLANE", "PLANET", "PLATONIC", "PLAYER", "PLEASE", "PLUCKY", "PLUNDER", "PLURALS", "POCKET", "POLICE", "PORTRAIT", "POTATO", "POTENTLY", "POUNCE", "POVERTY", "PRACTICE", "PREDICT", "PREFECT", "PREMIUM", "PRESENT", "PRINCE", "PRINTER", "PRISON", "PROFIT", "PROMISE", "PROPHET", "PROTEIN", "PROVINCE", "PSALM", "PSYCHIC", "PUDDLE", "PUNCHBAG", "PUNGENT", "PUNISH", "PURCHASE", "QUAGMIRE", "QUALIFY", "QUANTIFY", "QUANTIZE", "QUARTER", "QUERYING", "QUEUE", "QUICHE", "QUICK", "RABBIT", "RACOON", "RADAR", "RADICAL", "RAINBOW", "RANDOM", "RATTLE", "RAVENOUS", "REASON", "REBUKE", "REFINE", "REGULAR", "REINDEER", "REQUEST", "RESORT", "RESPECT", "RETIRE", "REVOLT", "REWARD", "RHAPSODY", "RHENIUM", "RHODIUM", "RHOMBOID", "RHYME", "RHYTHM", "RIDICULE", "ROADWORK", "ROAR", "ROAST", "ROOM", "ROOSTER", "ROSTER", "ROTOR", "ROTUNDA", "ROYAL", "RULER", "RURAL", "SAILOR", "SAINTED", "SALES", "SALLY", "SATISFY", "SAUNTER", "SCALE", "SCANDAL", "SCHEDULE", "SCHOOL", "SCIENCE", "SCRATCH", "SCREEN", "SCREEN", "SENSIBLE", "SEPARATE", "SERIOUS ", "SEVERAL", "SHAMPOO", "SHARES", "SHELTER", "SHIFT", "SHIP", "SHIRT", "SHIVER", "SHORTEN", "SHOWCASE", "SHUFFLE", "SILENT", "SIMILAR", "SISTER", "SIXTH", "SIXTY", "SKATER", "SKYWARD", "SLANDER", "SLAYER", "SLEEK", "SLIPPER", "SMART", "SMEARED", "SOCCER", "SOCIETY", "SOURCE", "SPAIN", "SPARE", "SPARK", "SPATULA", "SPEAKER", "SPECIAL", "SPECTATE", "SPECTRUM", "SPICY", "SPINACH", "SPIRAL", "SPLENDID", "SPLINTER", "SPRAYED", "SPREAD", "SPRING", "SQUADRON", "SQUANDER", "SQUASH", "SQUIB", "SQUID", "SQUISH", "STAKE", "STALKING", "STEAK", "STEAM", "STICKER", "STINKY", "STOCKING", "STONE", "STORE", "STORMY", "STRANGE", "STRIKE", "STUTTER", "SUBWAY", "SUFFER", "SUPREME", "SURF", "SURPLUS", "SURVEY", "SWITCH", "SYMBOL", "SYSTEM", "SYSTEMIC", "TABLE", "TADPOLE", "TALKING", "TANGLE", "TANK", "TAPEWORM", "TARGET", "TAROT", "TEACH", "TEAMWORK", "TERMINAL", "TERMINUS", "TERROR", "TESTIFY", "THEIR", "THERE", "THICK", "THIEF", "THINK", "THROAT", "THROUGH", "THUNDER", "THYME", "TICKET", "TIME", "TOASTER", "TOMATO", "TONE", "TORQUE", "TORTOISE", "TOUCHY", "TOUPE", "TOWER", "TRANSFIX", "TRANSIT", "TRASH", "TRAUMA", "TREASON", "TREASURE", "TRICK", "TRIPOD", "TROUBLE", "TRUCK", "TRUMPET", "TURTLE", "TWINKLE", "UGLY", "ULTRA", "UMBRELLA", "UNDERWAY", "UNIQUE", "UNKNOWN", "UNSTEADY", "UNTOWARD", "UNWASHED", "UPGRADE", "URBAN", "USED", "USELESS", "UTOPIA", "VACUUM", "VAMPIRE", "VANISH", "VANQUISH", "VARIOUS", "VAST", "VELOCITY", "VENDOR", "VERB", "VERBATIM", "VERDICT", "VEXATION", "VICIOUS", "VICTIM", "VICTORY", "VIDEO", "VIEW", "VIKING", "VILLAGE", "VIOLENT", "VIOLIN", "VIRULENT", "VISCERAL", "VISION", "VOLATILE", "VOLTAGE", "VORTEX", "VULGAR", "WARDEN", "WARLOCK", "WARNING", "WEALTH", "WEAPON", "WEDDING", "WEIGHT", "WHACK", "WHARF", "WHAT", "WHEN", "WHISK", "WHISTLE", "WICKED", "WINDOW", "WINDOW", "WINTER", "WITNESS", "WIZARD", "WRETCH", "WRINKLE", "WRITER", "XANTHOUS", "YACHT", "YARN", "YAWN", "YEAH", "YEARLONG", "YEARN", "YEOMAN", "YODEL", "YOGA", "YONDER ", "YOUNGEST", "YOURSELF", "ZEALOT", "ZEBRA", "ZENITH", "ZITHER", "ZODIAC", "ZOMBIE", "MUSTACHE", "BEARD" };
 
     // Use this for initialization
     void Start () {
@@ -99,10 +101,6 @@ public class modernCipher : MonoBehaviour {
     {
         UserScreen.text = "";
         chosenWords = new Dictionary<string, string>();
-        streamReader = new StreamReader("Assets\\wordsDataBase.txt");
-        while (streamReader.ReadLine() != null)
-            totalWords++;
-        streamReader = new StreamReader("Assets\\wordsDataBase.txt");
         Debug.LogFormat("[Modern Cipher #{0}] totalWords = {1}", _moduleId, totalWords);
         wordsCounter[0].GetComponent<Renderer>().material = ledsMat;
         wordsCounter[1].GetComponent<Renderer>().material = ledsMat;
@@ -116,7 +114,7 @@ public class modernCipher : MonoBehaviour {
         Debug.LogFormat("[Modern Cipher #{0}] <Stage {1}> START", _moduleId, num);
 
         do
-            ans = getLine();
+            ans = wordsDataBase[UnityEngine.Random.Range(0, wordsDataBase.Length)];
         while (chosenWords.Values.Contains(ans));
         chosenWords.Add("Stage"+stageCur, ans);
         encrypted = "";
@@ -241,19 +239,6 @@ public class modernCipher : MonoBehaviour {
         }
             
         Screen.text = encrypted;
-    }
-
-    private string getLine()
-    {
-        string line = "";
-        using (streamReader)
-        {
-            for (int i = 0; i < UnityEngine.Random.Range(0, totalWords); i++)
-            {
-                line = streamReader.ReadLine();
-            }
-            return line;
-        }
     }
 
     private int getPositionFromChar(char c)
