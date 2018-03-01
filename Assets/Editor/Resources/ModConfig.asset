@@ -23,7 +23,9 @@ MonoBehaviour:
     moduleID: modernCipher
 
 
-    PDF Manual: https://www.dropbox.com/s/z45e5cdc9dkc0mu/Keep%20Talking%20and%20Nobody%20Explodes%20_%20Modern%20Cipher%20Manual%20Page.pdf?dl=0'
-  version: 1.1
+    PDF Manual: https://www.dropbox.com/s/z45e5cdc9dkc0mu/Keep%20Talking%20and%20Nobody%20Explodes%20_%20Modern%20Cipher%20Manual%20Page.pdf?dl=0
+
+    HTML Manual: https://ktane.timwi.de/HTML/Modern%20Cipher.html'
+  version: 1.2
   outputFolder: build
   previewImage: {fileID: 2800000, guid: fa93715097659284b863b9ef8bfcb989, type: 3}
