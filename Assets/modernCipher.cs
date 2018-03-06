@@ -219,6 +219,7 @@ public class modernCipher : MonoBehaviour {
         }
         else
         {
+            Debug.LogFormat("[Modern Cipher #{0}] <Stage {1}> The number of solved modules is {2}", _moduleId, num, Info.GetSolvedModuleNames().Count);
             foreach (char c in ans)
             {
                 int position = getPositionFromChar(c);
