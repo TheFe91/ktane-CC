@@ -60,36 +60,10 @@ public class modernCipher : MonoBehaviour {
 
     private string intToChar(int i)
     {
-        switch (i)
-        {
-            case 0: return "Q";
-            case 1: return "W";
-            case 2: return "E";
-            case 3: return "R";
-            case 4: return "T";
-            case 5: return "Y";
-            case 6: return "U";
-            case 7: return "I";
-            case 8: return "O";
-            case 9: return "P";
-            case 10: return "A";
-            case 11: return "S";
-            case 12: return "D";
-            case 13: return "F";
-            case 14: return "G";
-            case 15: return "H";
-            case 16: return "J";
-            case 17: return "K";
-            case 18: return "L";
-            case 19: return "Z";
-            case 20: return "X";
-            case 21: return "C";
-            case 22: return "V";
-            case 23: return "B";
-            case 24: return "N";
-            case 25: return "M";
-        }
-        return "";
+        string qwerty = "QWERTYUIOPASDFGHJKLZXCVBNM";
+        i %= 26;
+        if (i < 0) i += 26;
+        return qwerty.Substring(i, 1);
     }
 
     void Activate()
@@ -141,18 +115,7 @@ public class modernCipher : MonoBehaviour {
             {
                 int position = getPositionFromChar(c);
                 position += key;
-                if (position > 25)
-                {
-                    int tmp = -1;
-                    while (position > 25)
-                    {
-                        position--;
-                        tmp++;
-                    }
-                    encrypted += intToChar(tmp);
-                }
-                else
-                    encrypted += intToChar(position);
+                encrypted += intToChar(position);
             }
             Debug.LogFormat("[Modern Cipher #{0}] <Stage {1}> Serial number contains at least a vowel. Encrypted word is {2}", _moduleId, num, encrypted);
         }
@@ -162,18 +125,7 @@ public class modernCipher : MonoBehaviour {
             {
                 int position = getPositionFromChar(c);
                 position -= key;
-                if (position < 0)
-                {
-                    int tmp = 26;
-                    while (position < 0)
-                    {
-                        position++;
-                        tmp--;
-                    }
-                    encrypted += intToChar(tmp);
-                }
-                else
-                    encrypted += intToChar(position);
+                encrypted += intToChar(position);
             }
             Debug.LogFormat("[Modern Cipher #{0}] <Stage {1}> Serial number does not contain vowels. More than 3 batteries on the bomb. Encrypted word is {2}", _moduleId, num, encrypted);
         }
@@ -185,34 +137,12 @@ public class modernCipher : MonoBehaviour {
                 if (stageCur != 1)
                 {
                     position += key + chosenWords["Stage" + (stageCur - 1).ToString()].Count(); //sommo alla chiave il numero di lettere della parola precedente
-                    if (position > 25)
-                    {
-                        int tmp = -1;
-                        while (position > 25)
-                        {
-                            position--;
-                            tmp++;
-                        }
-                        encrypted += intToChar(tmp);
-                    }
-                    else
-                        encrypted += intToChar(position);
+                    encrypted += intToChar(position);
                 }
                 else
                 {
                     position += key;
-                    if (position > 25)
-                    {
-                        int tmp = -1;
-                        while (position > 25)
-                        {
-                            position--;
-                            tmp++;
-                        }
-                        encrypted += intToChar(tmp);
-                    }
-                    else
-                        encrypted += intToChar(position);
+                    encrypted += intToChar(position);
                 }
             }
             Debug.LogFormat("[Modern Cipher #{0}] <Stage {1}> Serial number does not contain vowels. 3 or less batteries on the bomb and Serial Port detected. Encrypted word is {2}", _moduleId, num, encrypted);
@@ -224,18 +154,7 @@ public class modernCipher : MonoBehaviour {
             {
                 int position = getPositionFromChar(c);
                 position -= key - Info.GetSolvedModuleNames().Count;
-                if (position < 0)
-                {
-                    int tmp = 26;
-                    while (position < 0)
-                    {
-                        position++;
-                        tmp--;
-                    }
-                    encrypted += intToChar(tmp);
-                }
-                else
-                    encrypted += intToChar(position);
+                encrypted += intToChar(position);
             }
             Debug.LogFormat("[Modern Cipher #{0}] <Stage {1}> Serial number does not contain vowels. 2 or less batteries on the bomb. No Serial Port detected. Encrypted word is {2}", _moduleId, num, encrypted);
         }
@@ -245,36 +164,7 @@ public class modernCipher : MonoBehaviour {
 
     private int getPositionFromChar(char c)
     {
-        switch (c)
-        {
-            case 'A': return 10;
-            case 'B': return 23;
-            case 'C': return 21;
-            case 'D': return 12;
-            case 'E': return 2;
-            case 'F': return 13;
-            case 'G': return 14;
-            case 'H': return 15;
-            case 'I': return 7;
-            case 'J': return 16;
-            case 'K': return 17;
-            case 'L': return 18;
-            case 'M': return 25;
-            case 'N': return 24;
-            case 'O': return 8;
-            case 'P': return 9;
-            case 'Q': return 0;
-            case 'R': return 3;
-            case 'S': return 11;
-            case 'T': return 4;
-            case 'U': return 6;
-            case 'V': return 22;
-            case 'W': return 1;
-            case 'X': return 20;
-            case 'Y': return 5;
-            case 'Z': return 19;
-        }
-        return -1;
+        return "QWERTYUIOPASDFGHJKLZXCVBNM".IndexOf(c);
     }
 
     void handlePress(int i)
