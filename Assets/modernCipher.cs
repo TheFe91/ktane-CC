@@ -153,7 +153,7 @@ public class modernCipher : MonoBehaviour {
             foreach (char c in ans)
             {
                 int position = getPositionFromChar(c);
-                position -= key - Info.GetSolvedModuleNames().Count;
+                position -= (key + Info.GetSolvedModuleNames().Count);
                 encrypted += intToChar(position);
             }
             Debug.LogFormat("[Modern Cipher #{0}] <Stage {1}> Serial number does not contain vowels. 2 or less batteries on the bomb. No Serial Port detected. Encrypted word is {2}", _moduleId, num, encrypted);
